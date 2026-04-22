@@ -16,11 +16,11 @@ export default function Home() {
       <ImageSlideShow images={images} />
 
       <Marquee className="py-10" gradient={false} gradientColor="white" speed={100} pauseOnHover>
-        {/* <p
+        <p
           className="text-2xl font-bold text-center text-rose-600"
         >
           Registration Process has been Closed!
-        </p> */}
+        </p>
       </Marquee>
       {/* <Timer /> */}
       <Timeline />
