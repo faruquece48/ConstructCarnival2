@@ -19,7 +19,7 @@ export default function Home() {
         <p
           className="text-2xl font-bold text-center text-rose-600"
         >
-          Registration Process has been Closed!
+          Registration Process is open now!
         </p>
       </Marquee>
       {/* <Timer /> */}
