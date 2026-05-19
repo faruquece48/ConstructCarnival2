@@ -11,7 +11,7 @@ export default function Page() {
 
   const handleSubmission = async (formData: any) => {
     "use server";
-    let lastId = 1000;
+    let lastId = 1001;
     let userId = lastId;
 
     try {
