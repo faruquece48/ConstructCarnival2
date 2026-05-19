@@ -22,7 +22,7 @@ export default function Home() {
           Registration Process is open now!
         </p>
       </Marquee>
-      {/* <Timer /> */}
+      <Timer />
       <Timeline />
     </section>
   );

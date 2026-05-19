@@ -10,7 +10,7 @@ export const Timer = () => {
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
 
-  const deadline = "May, 25, 2024";
+  const deadline = "May, 25, 2026";
 
   const getTime = (deadline: string) => {
     const time = Date.parse(deadline) - Date.now();

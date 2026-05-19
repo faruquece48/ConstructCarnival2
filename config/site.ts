@@ -27,12 +27,12 @@ export const siteConfig = {
     //   ],
     // },
     {
-      label: "Events",
-      href: "/events",
-    },
-    {
       label: "Workshop",
       href: "/workshop",
+    },
+    {
+      label: "Events",
+      href: "/events",
     },
     {
       label: "Registration",
