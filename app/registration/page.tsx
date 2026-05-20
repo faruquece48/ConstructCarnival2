@@ -59,7 +59,7 @@ export default function Page() {
 
   return (
     <div className="flex flex-col w-full">
-      {/* <Timer /> */}
+      <Timer />
       <h1 className={title()}>Registration</h1>
 
 
@@ -70,7 +70,7 @@ export default function Page() {
           Registration Process has been Closed!
         </p>
       </Marquee>
-      {/* <RegistrationForm handleSubmission={handleSubmission} /> */}
+      <RegistrationForm handleSubmission={handleSubmission} />
 
     </div>
   );
