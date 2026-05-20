@@ -5,12 +5,14 @@ import { Button, Input, Textarea } from "@nextui-org/react";
 import { BsSendFill } from "react-icons/bs";
 
 function ContactForm() {
+
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
     subject: "",
     message: ""
   });
+
   const [errorMessages, setErrorMessages] = useState({
     fullName: "",
     email: "",
@@ -18,89 +20,149 @@ function ContactForm() {
     message: ""
   });
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const [loading, setLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [submitError, setSubmitError] = useState("");
+
+  const handleFormSubmit = async (e: React.FormEvent) => {
+
     e.preventDefault();
+
     let errors = false;
 
+    setSuccessMessage("");
+    setSubmitError("");
+
     if (formData.fullName === "") {
-      setErrorMessages((prevErrors) => ({ ...prevErrors, fullName: "Please enter your full name." }));
+      setErrorMessages((prev) => ({
+        ...prev,
+        fullName: "Please enter your full name."
+      }));
       errors = true;
     } else {
-      setErrorMessages((prevErrors) => ({ ...prevErrors, fullName: "" }));
+      setErrorMessages((prev) => ({
+        ...prev,
+        fullName: ""
+      }));
     }
 
     if (formData.email === "") {
-      setErrorMessages((prevErrors) => ({ ...prevErrors, email: "Please enter your email address." }));
+      setErrorMessages((prev) => ({
+        ...prev,
+        email: "Please enter your email address."
+      }));
       errors = true;
     } else {
-      setErrorMessages((prevErrors) => ({ ...prevErrors, email: "" }));
+      setErrorMessages((prev) => ({
+        ...prev,
+        email: ""
+      }));
     }
 
     if (formData.subject === "") {
-      setErrorMessages((prevErrors) => ({ ...prevErrors, subject: "Please enter the subject." }));
+      setErrorMessages((prev) => ({
+        ...prev,
+        subject: "Please enter the subject."
+      }));
       errors = true;
     } else {
-      setErrorMessages((prevErrors) => ({ ...prevErrors, subject: "" }));
+      setErrorMessages((prev) => ({
+        ...prev,
+        subject: ""
+      }));
     }
 
     if (formData.message === "") {
-      setErrorMessages((prevErrors) => ({ ...prevErrors, message: "Please enter your message." }));
+      setErrorMessages((prev) => ({
+        ...prev,
+        message: "Please enter your message."
+      }));
       errors = true;
     } else {
-      setErrorMessages((prevErrors) => ({ ...prevErrors, message: "" }));
+      setErrorMessages((prev) => ({
+        ...prev,
+        message: ""
+      }));
     }
 
-    if (!errors) {
-      console.log(formData);
+    if (errors) return;
+
+    try {
+
+      setLoading(true);
+
+      // API call
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to send message");
+      }
+
+      setSuccessMessage("Message sent successfully!");
+
+      // Clear form
+      setFormData({
+        fullName: "",
+        email: "",
+        subject: "",
+        message: ""
+      });
+
+    } catch (error) {
+
+      setSubmitError("Something went wrong. Please try again.");
+
+    } finally {
+
+      setLoading(false);
+
     }
-  };
-
-  const handleFullNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, fullName: e.target.value });
-    setErrorMessages((prevErrors) => ({ ...prevErrors, fullName: "" }));
-  };
-
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, email: e.target.value });
-    setErrorMessages((prevErrors) => ({ ...prevErrors, email: "" }));
-  };
-
-  const handleSubjectChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, subject: e.target.value });
-    setErrorMessages((prevErrors) => ({ ...prevErrors, subject: "" }));
-  };
-
-  const handleMessageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, message: e.target.value });
-    setErrorMessages((prevErrors) => ({ ...prevErrors, message: "" }));
   };
 
   return (
+
     <form className="flex flex-col w-full gap-5" onSubmit={handleFormSubmit}>
+
       <Input
         errorMessage={errorMessages.fullName}
         placeholder="Full Name *"
         required
         variant="underlined"
         value={formData.fullName}
-        onChange={handleFullNameChange}
+        onChange={(e) =>
+          setFormData({ ...formData, fullName: e.target.value })
+        }
       />
+
       <Input
         errorMessage={errorMessages.email}
         placeholder="Email *"
         required
+        type="email"
         variant="underlined"
         value={formData.email}
-        onChange={handleEmailChange}
+        onChange={(e) =>
+          setFormData({ ...formData, email: e.target.value })
+        }
       />
+
       <Input
         errorMessage={errorMessages.subject}
         placeholder="Subject *"
         required
         variant="underlined"
         value={formData.subject}
-        onChange={handleSubjectChange}
+        onChange={(e) =>
+          setFormData({ ...formData, subject: e.target.value })
+        }
       />
+
       <Textarea
         required
         errorMessage={errorMessages.message}
@@ -109,11 +171,34 @@ function ContactForm() {
         placeholder="Write your message here..."
         className="w-full"
         value={formData.message}
-        onChange={handleMessageChange}
+        onChange={(e) =>
+          setFormData({ ...formData, message: e.target.value })
+        }
       />
-      <Button startContent={<BsSendFill />} className="bg-rose-500 text-white p-2 rounded-md" type="submit">Send</Button>
+
+      {successMessage && (
+        <div className="text-green-500 font-medium">
+          {successMessage}
+        </div>
+      )}
+
+      {submitError && (
+        <div className="text-red-500 font-medium">
+          {submitError}
+        </div>
+      )}
+
+      <Button
+        startContent={<BsSendFill />}
+        className="bg-rose-500 text-white p-2 rounded-md"
+        type="submit"
+        isLoading={loading}
+      >
+        {loading ? "Sending..." : "Send"}
+      </Button>
+
     </form>
   )
 }
 
-export default ContactForm
+export default ContactForm;

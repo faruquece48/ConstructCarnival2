@@ -67,7 +67,7 @@ export default function Page() {
         <p
           className="text-2xl font-bold text-center text-rose-600"
         >
-          Registration Process has been Closed!
+          Registration is Live Now!
         </p>
       </Marquee>
       <RegistrationForm handleSubmission={handleSubmission} />
