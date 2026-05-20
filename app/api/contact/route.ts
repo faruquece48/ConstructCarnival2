@@ -16,18 +16,50 @@ export async function POST(req: Request) {
     });
 
     await transporter.sendMail({
-      from: body.email,
+
+      from: "abdullahruet13@gmail.com",
+
+      replyTo: body.email,
+
       to: "abdullahruet13@gmail.com",
-      subject: body.subject,
+
+      subject: `Contact Form: ${body.subject}`,
+
       html: `
-        <h2>New Contact Message</h2>
+        <div style="font-family: Arial, sans-serif; padding: 20px;">
 
-        <p><strong>Name:</strong> ${body.fullName}</p>
-        <p><strong>Email:</strong> ${body.email}</p>
-        <p><strong>Subject:</strong> ${body.subject}</p>
-        <p><strong>Message:</strong></p>
+          <h2 style="color:#e11d48;">
+            New Contact Message
+          </h2>
 
-        <p>${body.message}</p>
+          <hr />
+
+          <p>
+            <strong>Name:</strong> ${body.fullName}
+          </p>
+
+          <p>
+            <strong>Email:</strong> ${body.email}
+          </p>
+
+          <p>
+            <strong>Subject:</strong> ${body.subject}
+          </p>
+
+          <p>
+            <strong>Message:</strong>
+          </p>
+
+          <div style="
+            background:#f5f5f5;
+            padding:15px;
+            border-radius:8px;
+            line-height:1.6;
+          ">
+            ${body.message}
+          </div>
+
+        </div>
       `,
     });
 
@@ -38,7 +70,7 @@ export async function POST(req: Request) {
 
   } catch (error) {
 
-    console.log(error);
+    console.log("EMAIL ERROR:", error);
 
     return NextResponse.json(
       {
